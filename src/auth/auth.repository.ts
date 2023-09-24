@@ -80,4 +80,9 @@ export const AuthRepository = {
       user: record,
     };
   },
+
+  async getUserById(id: string): Promise<User | null> {
+    const record = getUserByIdQuery.get(id) as User | null;
+    return record;
+  },
 };

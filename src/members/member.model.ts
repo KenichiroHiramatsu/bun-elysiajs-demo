@@ -6,9 +6,10 @@ const part = t.Array(
 );
 
 const member = t.Object({
-  id: t.Number(),
+  id: t.String(),
   name: t.String(),
   part,
+  userId: t.String(),
 });
 
 // Static は型スキーマから TypeScript の型を生成するヘルパー関数
@@ -21,9 +22,19 @@ const memberDto = t.Object({
 
 export type MemberDto = Static<typeof memberDto>;
 
+const pureMember = t.Object({
+  id: t.String(),
+  name: t.String(),
+  part: t.String(),
+  user_id: t.String(),
+});
+export type PureMember = Static<typeof pureMember>;
+
 const app = new Elysia();
 export const memberModel = app.model({
   'member.member': member,
   'member.members': t.Array(member),
   'member.memberDto': memberDto,
+  'member.pureMember': pureMember,
+  'member.pureMembers': t.Array(pureMember),
 });

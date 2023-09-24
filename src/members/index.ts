@@ -1,21 +1,29 @@
 import { Elysia } from 'elysia';
-import { Member, memberModel } from './member.model';
+import { memberModel } from './member.model';
 import { setup } from '../setup';
-
-const members: Member[] = [
-  { id: 1, name: 'Hitori', part: ['Gt'] },
-  { id: 2, name: 'Ryo', part: ['Ba', 'Cho'] },
-  { id: 3, name: 'Nijika', part: ['Dr'] },
-  { id: 4, name: 'Ikuyo', part: ['Vo', 'Gt'] },
-];
+import { isAuthenticated } from '../auth/isAuthenticated';
 
 export const memberRoute = new Elysia()
   .use(memberModel)
   .use(setup)
+  .use(isAuthenticated)
+  .guard({
+    //複数のルートに対して同じ処理を実装
+    beforeHandle: [
+      ({ user, set }) => {
+        if (!user) {
+          set.status = 401;
+          return {
+            message: 'Unauthorized',
+          };
+        }
+      },
+    ],
+  })
   .get(
     '/members',
-    ({ MemberRepository }) => {
-      const members = MemberRepository.getAll();
+    ({ MemberRepository, user }) => {
+      const members = MemberRepository.getAll(user!.id);
       return members;
     },
     {
@@ -24,17 +32,8 @@ export const memberRoute = new Elysia()
   )
   .post(
     '/members',
-    ({ body, MemberRepository }) => {
-      //   const newMember: Member = {
-      //     id: members.length + 1,
-      //     name: body.name,
-      //     part: body.part,
-      //   };
-
-      const newMember = MemberRepository.create(body);
-
-      members.push(newMember);
-
+    ({ body, MemberRepository, user }) => {
+      const newMember = MemberRepository.create(body, user!.id);
       return newMember;
     },
     {
