@@ -4,9 +4,7 @@ import { Member, MemberDto, PureMember } from './member.model';
 const db = new Database('db.sqlite');
 
 const getAllQuery = db.prepare('SELECT * FROM members WHERE user_id = ?');
-const getMemberByIdQuery = db.prepare(
-  'SELECT id, name, part, user_id AS userId FROM members WHERE id = ?'
-);
+const getMemberByIdQuery = db.prepare('SELECT * FROM members WHERE id = ?');
 const insertQuery = db.prepare('INSERT INTO members (id, name, part, user_id) VALUES (?, ?, ?, ?)');
 
 export const MemberRepository = {

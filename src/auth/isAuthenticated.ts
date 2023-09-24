@@ -16,7 +16,7 @@ export const isAuthenticated = new Elysia()
     if (!cookie?.token) {
       return {
         success: false,
-        message: 'Unauthorized',
+        message: `Unauthorized`,
       };
     }
     // JWT トークンを検証

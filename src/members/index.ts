@@ -10,11 +10,11 @@ export const memberRoute = new Elysia()
   .guard({
     //複数のルートに対して同じ処理を実装
     beforeHandle: [
-      ({ user, set }) => {
+      ({ user, set, message }) => {
         if (!user) {
           set.status = 401;
           return {
-            message: 'Unauthorized',
+            message,
           };
         }
       },
