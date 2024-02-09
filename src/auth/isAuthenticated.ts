@@ -8,7 +8,7 @@ export const isAuthenticated = new Elysia()
   .use(cookie())
   .use(
     jwt({
-      secret: 'dekai-inu-battles-pink-neko',
+      secret: process.env.ELYSIA_SECRET ?? '',
     })
   )
   .derive(async ({ cookie, jwt, AuthRepository }) => {

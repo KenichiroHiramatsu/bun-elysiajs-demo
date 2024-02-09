@@ -10,8 +10,7 @@ export const authRoute = new Elysia()
   .use(cookie())
   .use(
     jwt({
-      // 本番環境では秘密鍵を環境変数から取得するなど、安全な方法で管理してください
-      secret: 'dekai-inu-battles-pink-neko',
+      secret: process.env.ELYSIA_SECRET ?? '',
     })
   )
   .post(
